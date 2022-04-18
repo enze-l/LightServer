@@ -1,5 +1,5 @@
 from light_sensor import LightSensor
-from networking import Networking
+import networking
 import time
 
 print("Starting Lightsensor")
@@ -7,9 +7,5 @@ lightsensor = LightSensor()
 print("Lightsensor Started")
 
 print("Starting Networking")
-networking = Networking()
+networking.run()
 print("Networking Started")
-
-while True:
-    time.sleep(.5)
-    print("CONT: " + str(lightsensor.get_last_measurement()))
