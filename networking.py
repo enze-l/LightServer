@@ -1,9 +1,12 @@
 import network
 import machine
 import tinyweb
+import light_sensor
+from light_sensor import LightSensor
 
 app = tinyweb.webserver()
-    
+light_sensor = LightSensor()
+
 def start_networking():
     wifi_tcp = network.WLAN(network.STA_IF)
     wifi_ssid = str(open('SSID', 'r').readline(), 'utf8')
@@ -19,13 +22,32 @@ def start_networking():
     except OSError as e:
         print(e)
         machine.reset()
-    
         
 def run():
+    start_networking()
     app.run(host='0.0.0.0', port=50000)
 
-@app.route("/")
-async def index(request, response):
+@app.route("/reading")
+async def reading(request, response):
     await response.start_html()
-    await response.send('<html><body><h1>Hello, world! (<a href="/table">table</a>)</h1></html>\n')
+    await response.send(str(light_sensor.get_last_measurement()))
 
+@app.route("/reading/min")
+async def min(request, response):
+    await response.start_html()
+    await response.send(str(light_sensor.get_min_level()))
+
+@app.route("/reading/max")
+async def max(request, response):
+    await response.start_html()
+    await response.send(str(light_sensor.get_max_level()))
+
+@app.route("/list/day")
+async def list_day(request, response):
+    await response.start_html()
+    await response.send(str(light_sensor.get_list_last_day()))
+
+@app.route("/list/100")
+async def list_100(request, response):
+    await response.start_html()
+    await response.send(str(light_sensor.get_list_last_100()))

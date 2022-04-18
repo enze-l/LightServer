@@ -18,14 +18,17 @@ class LightSensor:
     def __measure(self):
         while True:
             level = int(self.sensor.luminance(BH1750.CONT_HIRES_2))
+            
             self.list_100.append(level)
             if len(self.list_100) > 100:
                 del self.list_100[0]
-            if self.last_day_increment < time.time() - 60 * 30:
-                self.last_day_incremet = time.time()
+                
+            if (self.last_day_increment + 60 * 30 <  time.time()):
+                self.last_day_increment = time.time()
                 self.list_day.append(level)
             if len(self.list_day) > 48:
                 del self.list_day[0]
+                
             if level < self.min_level:
                 self.min_level = level
             if level > self.max_level:
