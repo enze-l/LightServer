@@ -6,6 +6,7 @@ from light_sensor import LightSensor
 
 app = tinyweb.webserver()
 light_sensor = LightSensor()
+subscriberList = []
 
 def start_networking():
     wifi_tcp = network.WLAN(network.STA_IF)
@@ -25,7 +26,13 @@ def start_networking():
         
 def run():
     start_networking()
+    app.add_resource(Subscriber, "/subscriber/<ip>")
     app.run(host='0.0.0.0', port=50000)
+    
+@app.route("/subscriber")
+async def subscriber(request, response):
+    await response.start_html()
+    await response.send(str(subscriberList))
 
 @app.route("/reading")
 async def reading(request, response):
@@ -51,3 +58,13 @@ async def list_day(request, response):
 async def list_100(request, response):
     await response.start_html()
     await response.send(str(light_sensor.get_list_last_100()))
+    
+class Subscriber():
+    def post(self, data, ip):
+        subscriberList.append(ip)
+        return ip
+
+    def delete(slef, data, ip):
+        subscriberList.remove(ip)
+        return "successfully_deleted"
+    
