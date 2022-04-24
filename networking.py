@@ -5,8 +5,8 @@ import light_sensor
 from light_sensor import LightSensor
 
 app = tinyweb.webserver()
-light_sensor = LightSensor()
 subscriberList = []
+light_sensor = LightSensor(subscriberList)
 
 def start_networking():
     wifi_tcp = network.WLAN(network.STA_IF)

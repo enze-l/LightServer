@@ -2,18 +2,18 @@ from machine import Pin, SoftI2C
 from bh1750 import BH1750
 import _thread
 import time
+from MicroWebCli.microWebCli import MicroWebCli
 
 class LightSensor:
-    
-    def __init__(self):
+    def __init__(self, subscriberList):
         self.sensor = BH1750(SoftI2C(scl=Pin(22), sda=Pin(21)))
         self.max_level = 0
         self.min_level = 65000
         self.list_100 = []
         self.list_day = []
         self.last_day_increment = 0
+        self.subscriberList = subscriberList
         _thread.start_new_thread(self.__measure, ())
-        time.sleep(1)
 
     def __measure(self):
         while True:
@@ -33,6 +33,8 @@ class LightSensor:
                 self.min_level = level
             if level > self.max_level:
                 self.max_level = level
+
+            self.send_value(level)
     
     def get_last_measurement(self):
         return self.list_100[len(self.list_100) - 1]
@@ -48,3 +50,9 @@ class LightSensor:
 
     def get_min_level(self):
         return self.min_level
+
+    def send_value(self, value):
+        try:
+            MicroWebCli.POSTRequest("http://192.168.2.38:8081/sensor", { "value": str(self.get_last_measurement()) } )
+        except Exception as e:
+            print(e)
