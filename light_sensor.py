@@ -53,6 +53,7 @@ class LightSensor:
 
     def send_value(self, value):
         try:
-            MicroWebCli.POSTRequest("http://192.168.2.38:8081/sensor", { "value": str(self.get_last_measurement()) } )
+            for subscriber in self.subscriberList :
+                MicroWebCli.POSTRequest("http://" + subscriber + "/sensor", { "value": str(self.get_last_measurement()) } )
         except Exception as e:
             print(e)
