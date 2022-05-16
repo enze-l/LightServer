@@ -51,9 +51,10 @@ class LightSensor:
     def get_min_level(self):
         return self.min_level
 
-    def send_value(self, value):
-        try:
-            for subscriber in self.subscriberList :
+    def send_value(self, value):    
+        for subscriber in self.subscriberList :
+            try:
                 MicroWebCli.POSTRequest("http://" + subscriber + "/sensor", { "value": str(self.get_last_measurement()) } )
-        except Exception as e:
-            print(e)
+            except Exception as e:
+                self.subscriberList.remove(subscriber)
+                print(subscriber + " removed due to not reachable")

@@ -62,6 +62,7 @@ async def list_100(request, response):
 class Subscriber():
     def post(self, data, ip):
         subscriberList.append(ip)
+        print(ip + " added to Subscribers")
         return ip
 
     def delete(slef, data, ip):
