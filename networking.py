@@ -65,7 +65,8 @@ class Subscriber():
         print(ip + " added to Subscribers")
         return ip
 
-    def delete(slef, data, ip):
+    def delete(self, data, ip):
         subscriberList.remove(ip)
+        print(ip + " removed from Subscribers")
         return "successfully_deleted"
     
