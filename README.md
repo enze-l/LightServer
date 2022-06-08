@@ -11,8 +11,8 @@ receiving the current state continuously and delete themselves from this registe
 | method | path             | information                                 |
 |--------|------------------|---------------------------------------------|
 | GET    | /subscriber      | List of current subscribers                 |         
-| POST   | /subscriber/<ip> | Subscribe to the sensor to receive readings |         
-| DELETE | /subscriber/<ip> | Unsubscribe from the sensor                 |
+| POST   | /subscriber/\<ip:port> | Subscribe to the sensor to receive readings |         
+| DELETE | /subscriber/\<ip:port> | Unsubscribe from the sensor                 |
 | GET    | /reading         | Last brightness reading                     |         
 | GET    | /reading/min     | All-time lowest reading                     |         
 | GET    | /reading/max     | All-time highest reading                    |         
