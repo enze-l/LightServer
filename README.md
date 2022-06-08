@@ -3,6 +3,8 @@ This server is designed to run on an esp32 with a connected light-sensor and del
 subscribers simultaneously. There is on existing implementation of a client that utilizes the information from this
 server to dimm the screen of a PC: https://github.com/enze-l/LightDesktop
 
+***warning:*** The sensor currently saves the connection data for your network in plain text! Do not use this project if you do not understand why this is a security vulnerability!
+
 # Api
 
 This Server mainly offers GET endpoints. The exception to this rule is that clients can register themselves for
@@ -17,7 +19,12 @@ receiving the current state continuously and delete themselves from this registe
 | GET    | /reading/min     | All-time lowest reading                     |         
 | GET    | /reading/max     | All-time highest reading                    |         
 | GET    | /list/day        | List of readings in the last 24 hours       |         
-| GET    | /list/100        | List of the last 100 readings               |         
+| GET    | /list/100        | List of the last 100 readings               |     
+
+# Setup
+- install micropython on your esp32
+- copy the files of this repository to the root of the esp32
+- create two files with the name "PASSWORD" and "SSID" and fill them with the connection information for your network
 
 
 # Design
